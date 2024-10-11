@@ -81,7 +81,7 @@ func (c *Client) fetchOneMeasurementPage(opts map[string]string) (raw *measureme
 // -- public
 
 // GetMeasurement gets info for a single one
-func (c *Client) GetMeasurement(id int) (m *Measurement, err error) {
+func (c *Client) GetMeasurement(id int, flags ...bool) (m *Measurement, err error) {
 	opts := make(map[string]string)
 	opts = c.addAPIKey(opts)
 
@@ -104,7 +104,56 @@ func (c *Client) GetMeasurement(id int) (m *Measurement, err error) {
 
 	m = &Measurement{}
 	err = json.Unmarshal(body, m)
+	if len(flags) > 0 && flags[0] {
+		m.ParticipationRequests, err = c.GetParticipationRequests(id)
+		if err != nil {
+			return &Measurement{}, errors.Wrap(err, "GetParticipationRequests")
+		}
+	}
 	c.debug("m=%#v\n", m)
+
+	return
+}
+
+type participationList struct {
+	Count    int
+	Next     string
+	Previous string
+	Results  []ParticipationRequest
+}
+
+func (c *Client) GetParticipationRequests(id int) (pr []ParticipationRequest, err error) {
+	// Header
+	opts := make(map[string]string)
+	opts = c.addAPIKey(opts)
+	c.mergeGlobalOptions(opts)
+
+	// Request
+	req := c.prepareRequest("GET", fmt.Sprintf("measurements/%d/participation-requests/", id), opts)
+	c.debug("req=%#v", req)
+	resp, err := c.call(req)
+	if err != nil {
+		c.verbose("call: %v", err)
+		_, err = c.handleAPIResponse(resp)
+		if err != nil {
+			return []ParticipationRequest{}, errors.Wrap(err, "call")
+		}
+	}
+
+	// Parse/Unmarshal
+	raw := &participationList{}
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	
+	err = json.Unmarshal(body, raw)
+	if err != nil {
+		return []ParticipationRequest{}, errors.Wrap(err, "Unmarshal")
+	}
+	c.debug("list=%#v\n", raw)
+
+	pr = raw.Results
+
 	return
 }
 

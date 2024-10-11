@@ -166,3 +166,61 @@ func TestClient_GetMeasurement_Ok(t *testing.T) {
 	assert.NoError(t, err)
 	assert.EqualValues(t, &myrp, m)
 }
+
+func TestClient_GetMeasurement_WithParticipation_Ok(t *testing.T) {
+	defer gock.Off()
+
+	pkNumber := 666
+	myurl, _ := url.Parse(apiEndpoint)
+
+	myrp := Measurement{ID: 666}
+	jrp, err := json.Marshal(myrp)
+
+	pr1 := ParticipationRequest{ID: 123}
+	pr2 := ParticipationRequest{ID: 456}
+
+	var participations []ParticipationRequest
+	participations = append(participations, pr1)
+	participations = append(participations, pr2)
+
+	prList := participationList{
+		Count: 2,
+		Next: "null",
+		Previous: "null",
+		Results: participations,
+	}
+	jspart, err := json.Marshal(prList)
+
+	gock.New(apiEndpoint).
+		Get(fmt.Sprintf("measurements/%d/", pkNumber)).
+		MatchParam("key", "foobar").
+		MatchHeaders(map[string]string{
+			"host":       myurl.Host,
+			"user-agent": fmt.Sprintf("ripe-atlas/%s", ourVersion),
+		}).
+		Reply(200).
+		BodyString(string(jrp))
+
+	gock.New(apiEndpoint).
+		Get(fmt.Sprintf("measurements/%d/participation-requests", pkNumber)).
+		MatchParam("key", "foobar").
+		MatchHeaders(map[string]string{
+			"host":       myurl.Host,
+			"user-agent": fmt.Sprintf("ripe-atlas/%s", ourVersion),
+		}).
+		Reply(200).
+		BodyString(string(jspart))
+
+	c := Before(t)
+	c.level = 2
+
+	gock.InterceptClient(c.client)
+	defer gock.RestoreClient(c.client)
+	
+	myrp.ParticipationRequests = participations
+
+	m, err := c.GetMeasurement(pkNumber, true)
+	t.Logf("err=%v", err)
+	assert.NoError(t, err)
+	assert.EqualValues(t, &myrp, m)
+}
