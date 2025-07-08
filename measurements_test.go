@@ -91,10 +91,10 @@ func TestClient_DeleteMeasurement_Ok(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Delete(fmt.Sprintf("measurements/%d/", pkNumber)).
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"host":       myurl.Host,
 			"user-agent": fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Reply(200).
 		BodyString(string(jrp))
@@ -147,10 +147,10 @@ func TestClient_GetMeasurement_Ok(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Get(fmt.Sprintf("measurements/%d/", pkNumber)).
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"host":       myurl.Host,
 			"user-agent": fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Reply(200).
 		BodyString(string(jrp))
@@ -193,20 +193,20 @@ func TestClient_GetMeasurement_WithParticipation_Ok(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Get(fmt.Sprintf("measurements/%d/", pkNumber)).
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"host":       myurl.Host,
 			"user-agent": fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Reply(200).
 		BodyString(string(jrp))
 
 	gock.New(apiEndpoint).
 		Get(fmt.Sprintf("measurements/%d/participation-requests", pkNumber)).
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"host":       myurl.Host,
 			"user-agent": fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Reply(200).
 		BodyString(string(jspart))

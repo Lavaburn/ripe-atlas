@@ -143,12 +143,12 @@ func TestClient_Call(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Post("measurements/dns").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		JSON(r).
 		Reply(403).

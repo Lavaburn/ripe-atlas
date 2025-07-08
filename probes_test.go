@@ -2,6 +2,7 @@ package atlas
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -17,7 +18,9 @@ func TestClient_GetProbe_Badkey(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Get("/probes/0").
-		MatchParam("key", "foobar").
+		MatchHeaders(map[string]string{
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
+		}).
 		Reply(403).
 		BodyString(`{"error":{"status":403,"code":104,"detail":"The provided API key does not exist","title":"Forbidden"}}`)
 
@@ -46,7 +49,9 @@ func TestClient_GetProbe(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Get("/probes/0").
-		MatchParam("key", "foobar").
+		MatchHeaders(map[string]string{
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
+		}).
 		Reply(200).
 		BodyString(string(ft))
 

@@ -19,10 +19,10 @@ func TestClient_GetCredits_InvalidKey(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Get("credits").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"host":       myurl.Host,
 			"user-agent": fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Reply(403).
 		BodyString(`{"error":{"status":403,"code":104,"detail":"The provided API key does not exist","title":"Forbidden"}}`)
@@ -46,7 +46,9 @@ func TestClient_GetCredits(t *testing.T) {
 
 	gock.New(apiEndpoint).
 		Get("credits").
-		MatchParam("key", "foobar").
+		MatchHeaders(map[string]string{
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
+		}).
 		Reply(200).
 		BodyString(string(ft))
 

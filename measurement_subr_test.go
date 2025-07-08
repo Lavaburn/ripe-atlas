@@ -149,12 +149,12 @@ func TestClient_DNS_InvalidKey(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/dns").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(403).
@@ -184,12 +184,12 @@ func TestClient_DNS(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/dns").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(200).
@@ -219,12 +219,12 @@ func TestClient_NTP_InvalidKey(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/ntp").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(403).
@@ -254,12 +254,12 @@ func TestClient_NTP(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/ntp").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(200).
@@ -289,12 +289,12 @@ func TestClient_Ping_InvalidKey(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/ping").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(403).
@@ -324,12 +324,12 @@ func TestClient_Ping(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/ping").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(200).
@@ -359,12 +359,12 @@ func TestClient_Traceroute_InvalidKey(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/traceroute").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(403).
@@ -394,12 +394,12 @@ func TestClient_Traceroute(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/traceroute").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(200).
@@ -429,12 +429,12 @@ func TestClient_HTTP_InvalidKey(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/http").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(403).
@@ -464,12 +464,12 @@ func TestClient_HTTP(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/http").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(200).
@@ -499,12 +499,12 @@ func TestClient_SSLCert_InvalidKey(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/sslcert").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(403).
@@ -534,12 +534,12 @@ func TestClient_SSLCert(t *testing.T) {
 	buf := bytes.NewReader(jr)
 	gock.New(apiEndpoint).
 		Post("measurements/sslcert").
-		MatchParam("key", "foobar").
 		MatchHeaders(map[string]string{
 			"content-type": "application/json",
 			"accept":       "application/json",
 			"host":         myurl.Host,
 			"user-agent":   fmt.Sprintf("ripe-atlas/%s", ourVersion),
+			"Authorization": fmt.Sprintf("Key %s", "foobar"),
 		}).
 		Body(buf).
 		Reply(200).

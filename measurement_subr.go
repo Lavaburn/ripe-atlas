@@ -115,7 +115,9 @@ func (m *MeasurementRequest) AddDefinition(fields map[string]string) *Measuremen
 func (c *Client) createMeasurement(t string, d *MeasurementRequest) (m *MeasurementResp, err error) {
 	opts := make(map[string]string)
 	opts = c.addAPIKey(opts)
-	req := c.prepareRequest("POST", fmt.Sprintf("measurements/%s", t), opts)
+	//req := c.prepareRequest("POST", fmt.Sprintf("measurements/%s", t), opts)
+	// CHANGE feb/2025 - Type must be specified in MeasurementRequest
+	req := c.prepareRequest("POST", "measurements", opts)	
 
 	body, err := json.Marshal(d)
 	if err != nil {

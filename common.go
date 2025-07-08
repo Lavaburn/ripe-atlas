@@ -66,6 +66,13 @@ func (c *Client) prepareRequest(method, what string, opts map[string]string) (re
 		}
 	}
 
+	// CHANGE feb/2025 - "key" must be added to header and not in params!
+	api_key := ""
+	if _, ok := opts["key"]; ok {
+		api_key = opts["key"]
+		delete(opts, "key")
+	}
+
 	c.mergeGlobalOptions(opts)
 	c.debug("Options:\n%v", opts)
 	baseURL := AddQueryParameters(endPoint, opts)
@@ -77,6 +84,10 @@ func (c *Client) prepareRequest(method, what string, opts map[string]string) (re
 	}
 
 	c.debug("req.url=%s", baseURL)
+	if api_key != "" {
+		req.Header.Set("Authorization", fmt.Sprintf("Key %s", api_key))
+	}
+
 	// We need these when we POST
 	if method == "POST" {
 		req.Header.Set("Content-Type", "application/json")
